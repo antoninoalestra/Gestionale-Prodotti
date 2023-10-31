@@ -12,7 +12,7 @@ public class Main {
         List<Cliente> clienti = new ArrayList<>();
 
         int tentativi = 3;
-        boolean accesso = false;
+        boolean accesso = false, isAdmin = false;
         do{
             int scelta = 0;            
             do{
@@ -23,7 +23,6 @@ public class Main {
             }while(scelta < 1 || scelta >3);
             
             String mail, password;
-            boolean isAdmin = false;
             switch(scelta){
                 case 1:
                     System.out.print("Inserisci email: ");
@@ -81,6 +80,6 @@ public class Main {
 
         }while(tentativi > 0 && !accesso);
 
-        
+
     }
 }
