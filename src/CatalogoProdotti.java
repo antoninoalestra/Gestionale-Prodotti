@@ -7,24 +7,27 @@ public class CatalogoProdotti {
 
         Scanner scanner = new Scanner(System.in);
         Scanner scan = new Scanner(System.in);
-
+        
+        //creazione dell'amministratore e della lista di Clienti
         Utente admin = new Admin();
         List<Cliente> clienti = new ArrayList<>();
 
-        int tentativi = 3;
-        boolean accesso = false, isAdmin = false;
+        int tentativi = 3; //numero di tentativi per accedere
+        boolean accesso = false, isAdmin = false; //variabili per stabilire se l'utente ha effettuato l'accesso
         do {
             int scelta = 0;
+            // ciclo per l'inserimento della scelta dell'utente
             do {
                 System.out.println("1. ACCEDI \n2. REGISTRATI \n3. ESCI");
                 System.out.println("Inserisci la tua scelta: ");
                 scelta = scanner.nextInt();
-                if (scelta < 1 || scelta > 3)
-                    System.out.println("Valore non valido!");
+                if (scelta < 1 || scelta > 3) System.out.println("Valore non valido!");
             } while (scelta < 1 || scelta > 3);
 
             String mail, password;
+            // ciclo per svolgere le varie opzioni del menu precedente
             switch (scelta) {
+                // prima opzione - accesso
                 case 1:
                     System.out.print("Inserisci email: ");
                     mail = scan.nextLine();
@@ -33,11 +36,12 @@ public class CatalogoProdotti {
 
                     System.out.println();
 
+                    // verifico se ad accedere è l'amministratore
                     if (admin.getEmail().equals(mail) && admin.getPassword().equals(password)) {
                         System.out.println("Accesso come AMMINISTRATORE!");
                         isAdmin = true;
                         accesso = true;
-                    } else if (clienti != null) {
+                    } else if (clienti != null) { //verifica di accesso come cliente
                         boolean trovato = false;
                         for (int i = 0; i < clienti.size() && !trovato; i++) {
                             if (clienti.get(i).getEmail().equals(mail)
@@ -57,6 +61,7 @@ public class CatalogoProdotti {
                         System.out.println("Nessun utente trovato!");
                     }
                     break;
+                // seconda opzione - registrazione
                 case 2:
                     System.out.println("NUOVO UTENTE!");
                     System.out.print("Inserisci email: ");
@@ -69,6 +74,7 @@ public class CatalogoProdotti {
                         clienti.add(nuovoCliente);
                     }
                     break;
+                // opzione di uscita
                 case 3:
                     System.out.println("Programma in chiusura!");
                     System.exit(0);
@@ -86,6 +92,7 @@ public class CatalogoProdotti {
 
         if (accesso) {
             String risp = null;
+            // stampa del menu in base al tipo di accesso (amministratore o cliente)
             do {
                 System.out.println("\nMENU");
                 System.out.println("0. ESCI. \n1. VISUALIZZA PRODOTTI.");
@@ -97,10 +104,12 @@ public class CatalogoProdotti {
                 int scelta1 = scan1.nextInt();
 
                 switch (scelta1) {
+                    // opzione per uscire
                     case 0:
                         System.out.println("\nProgramma in chiusura!");
                         System.exit(0);
                         break;
+                    // opzione per visualizzare i prodotti
                     case 1:
                         if(prodotti != null){
                             for (Prodotto prodotto : prodotti) {
@@ -111,6 +120,7 @@ public class CatalogoProdotti {
                         }
                         
                         break;
+                    // opzione per inserire un nuovo prodotto (only admin)
                     case 2:
                         if (isAdmin) {
                             System.out.print("NUOVO PRODOTTO.\nInserisci il nome: ");
@@ -130,6 +140,7 @@ public class CatalogoProdotti {
                             System.out.println("Valore non valido!");
                         }
                         break;
+                    // opzione per eliminare un prodotto (only admin)
                     case 3:
                         if (isAdmin) {
                             System.out.println("ELIMINA PRODOTTO.\nInserisci il nome del prodotto da eliminare: ");
@@ -147,6 +158,7 @@ public class CatalogoProdotti {
                             System.out.println("Valore non valido!");
                         }
                         break;
+                    // opzione per modificare un prodotto (only admin)
                     case 4:
                         if (isAdmin) {
                             if (prodotti != null) {
@@ -154,7 +166,8 @@ public class CatalogoProdotti {
                                 String nome = scan1.next();
 
                                 for (int i = 0; i < prodotti.size(); i++) {
-                                    if (prodotti.get(i).getNome().equalsIgnoreCase(nome)) {
+                                    if (prodotti.get(i).getNome().equalsIgnoreCase(nome)) {  // controllo per verificare che il nome inserito sia quello corretto
+                                        // menu di scelta per modificare il prodotto secondo un criterio scelto dall'utente
                                         System.out.println("Cosa vuoi modificare: \n1. NOME.\n2. PREZZO.\n3. QUANTITA.");
                                         int scelta2 = scan1.nextInt();
 
@@ -191,6 +204,7 @@ public class CatalogoProdotti {
                         break;
                 }
 
+                // domanda per sapere se l'utente vuole continuare
                 System.out.println("\nVuoi fare qualcos'altro? (si o no) ");
                 risp = scan1.next();
 
