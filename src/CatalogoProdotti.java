@@ -81,65 +81,108 @@ public class CatalogoProdotti {
 
         } while (tentativi > 0 && !accesso);
 
-
         List<Prodotto> prodotti = new ArrayList<>();
         Scanner scan1 = new Scanner(System.in);
 
         if (accesso) {
             String risp = null;
-            do{
+            do {
                 System.out.println("\nMENU");
                 System.out.println("0. ESCI. \n1. VISUALIZZA PRODOTTI.");
-    
-                if(isAdmin){
-                    System.out.println("2. AGGIUNGI PRODOTTO. \n3. ELIMINA PRODOTTO.");
+
+                if (isAdmin) {
+                    System.out.println("2. AGGIUNGI PRODOTTO. \n3. ELIMINA PRODOTTO. \n4. MODIFICA PRODOTTO.");
                 }
-    
+
                 int scelta1 = scan1.nextInt();
-    
+
                 switch (scelta1) {
                     case 0:
                         System.out.println("\nProgramma in chiusura!");
                         System.exit(0);
                         break;
-                    case 1: 
-                        for (Prodotto prodotto : prodotti) {
-                            System.out.println(prodotto);
+                    case 1:
+                        if(prodotti != null){
+                            for (Prodotto prodotto : prodotti) {
+                                System.out.println(prodotto);
+                            }
+                        } else{
+                            System.out.println("Non ci sono prodotti nel catalogo!");
                         }
+                        
                         break;
                     case 2:
-                        if(isAdmin){
+                        if (isAdmin) {
                             System.out.print("NUOVO PRODOTTO.\nInserisci il nome: ");
-                            String nome = scan1.next();
+                            String nome = scan.nextLine();
                             System.out.print("Inserisci il prezzo: ");
                             double prezzo = scan1.nextDouble();
                             System.out.print("Inserisci la quantità: ");
                             int quantita = scan1.nextInt();
-    
+
                             Prodotto nuovoProdotto = new Prodotto(nome, prezzo, quantita);
-    
-                            if(prodotti.add(nuovoProdotto)){
+
+                            if (prodotti.add(nuovoProdotto)) {
                                 System.out.println("Prodotto inserito correttamente!");
                             }
-                            
-                        } else{
+
+                        } else {
                             System.out.println("Valore non valido!");
                         }
                         break;
-                    case 3: 
+                    case 3:
                         if (isAdmin) {
                             System.out.println("ELIMINA PRODOTTO.\nInserisci il nome del prodotto da eliminare: ");
                             String nome = scan1.next();
-    
-                            if(prodotti != null){
-                                for(int i = 0; i < prodotti.size(); i++){
-                                    if(prodotti.get(i).getNome().equalsIgnoreCase(nome)){
+
+                            if (prodotti != null) {
+                                for (int i = 0; i < prodotti.size(); i++) {
+                                    if (prodotti.get(i).getNome().equalsIgnoreCase(nome)) {
                                         prodotti.remove(i);
                                         System.out.println("Prodotto rimosso correttamente!");
                                     }
                                 }
                             }
-                        } else{
+                        } else {
+                            System.out.println("Valore non valido!");
+                        }
+                        break;
+                    case 4:
+                        if (isAdmin) {
+                            if (prodotti != null) {
+                                System.out.println("Inserisci il nome del prodotto che vuoi modificare: ");
+                                String nome = scan1.next();
+
+                                for (int i = 0; i < prodotti.size(); i++) {
+                                    if (prodotti.get(i).getNome().equalsIgnoreCase(nome)) {
+                                        System.out.println("Cosa vuoi modificare: \n1. NOME.\n2. PREZZO.\n3. QUANTITA.");
+                                        int scelta2 = scan1.nextInt();
+
+                                        if(scelta2 == 1){
+                                            System.out.println("Inserisci il nuovo nome: ");
+                                            String nuovoNome = scan1.next();
+                                            prodotti.get(i).setNome(nuovoNome);
+                                            System.out.println("\nNome modificato correttamente!");
+                                        }
+                                        else if(scelta2 == 2){
+                                            System.out.println("Inserisci il nuovo prezzo: ");
+                                            double nuovoPrezzo = scan1.nextDouble();
+                                            prodotti.get(i).setPrezzo(nuovoPrezzo);
+                                            System.out.println("\nPrezzo modificato correttamente!");
+                                        }
+                                        else if(scelta2 == 3){
+                                            System.out.println("Inserisci la nuova quantità disponibile: ");
+                                                int nuovaQuantita = scan1.nextInt();
+                                                prodotti.get(i).setQuantita(nuovaQuantita);
+                                                System.out.println("\nQuantità modificata correttamente!");
+                                        }
+                                        else{
+                                            System.out.println("Valore inserito non valido!");
+                                        }
+                                    }
+                                }
+                            }
+                        } else {
                             System.out.println("Valore non valido!");
                         }
                         break;
@@ -147,18 +190,15 @@ public class CatalogoProdotti {
                         System.out.println("Valore non valido!");
                         break;
                 }
-    
 
-
-                System.out.println("Vuoi fare qualcos'altro? (si o no) ");
+                System.out.println("\nVuoi fare qualcos'altro? (si o no) ");
                 risp = scan1.next();
-    
-                if(!risp.equalsIgnoreCase("si") && !risp.equalsIgnoreCase("no")){
-                    System.out.println("Scrivi si o no!");
+
+                if (!risp.equalsIgnoreCase("si") && !risp.equalsIgnoreCase("no")) {
+                    System.out.println("Scrivi si o no");
                 }
 
-            } while(risp.equalsIgnoreCase("si"));
-
+            } while (risp.equalsIgnoreCase("si"));
 
         }
     }
